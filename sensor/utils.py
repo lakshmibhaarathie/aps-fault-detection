@@ -1,4 +1,4 @@
-import os.path
+import os
 import yaml
 import dill
 import pandas as pd
@@ -15,8 +15,6 @@ def get_mongoDB_collection(database_name: str, collection_name: str) -> pd.DataF
     :return: pandas.DataFrame
     """
     try:
-        database_name = database_name
-        collection_name = collection_name
         df = pd.DataFrame(list(mongo_client[database_name][collection_name].find()))
         df.drop("_id", axis=1, inplace=True)
         df.replace({"na": np.NAN}, inplace=True)
