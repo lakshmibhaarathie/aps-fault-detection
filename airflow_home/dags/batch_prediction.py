@@ -12,7 +12,7 @@ with DAG("sensor_training", default_args={"retries": 2},
          schedule_intrval="@weekly", tags=["example"],
          start_data=pendulum.datetime(2022, 12, 24, tz="UTC")) as dag:
     def download_files(**kwargs):
-        bucket_name = os.getenv("BUCKET NAME")
+        bucket_name = os.getenv("BUCKET_NAME")
         input_dir = "/app/input_files"
         # create directory
         os.makedirs(input_dir, exist_ok=True)
@@ -27,7 +27,7 @@ with DAG("sensor_training", default_args={"retries": 2},
 
 
     def sync_prediction_to_s3_bucket(**kwargs):
-        bucket_name = "BUCKET NAME"
+        bucket_name = "BUCKET_NAME"
         os.system(f"aws s3 sync /app/prediction s3://{bucket_name}/prediction_files")
 
 

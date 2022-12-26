@@ -16,7 +16,7 @@ with DAG("sensor_training", default_args={"retries": 2},
 
 
     def sync_artifact_to_s3_bucket(**kwargs):
-        bucket_name = os.getenv("BUCKET NAME")
+        bucket_name = os.getenv("BUCKET_NAME")
         os.system(f"aws s3 sync /app/artifact s3://{bucket_name}/artifacts")
         os.system(f"aws s3 sync /app/model_registry s3://{bucket_name}/model_registry")
 
