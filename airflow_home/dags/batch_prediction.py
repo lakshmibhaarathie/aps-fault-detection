@@ -5,12 +5,11 @@ from airflow import DAG
 from asyncio import tasks
 from textwrap import dedent
 from airflow.operators.python import PythonOperator
-from sensor.pipeline.batch_prediction import start_batch_prediction
 
 with DAG("sensor_training", default_args={"retries": 2},
          description="Sensor Fault Detection", catchup=False,
-         schedule_intrval="@weekly", tags=["example"],
-         start_data=pendulum.datetime(2022, 12, 24, tz="UTC")) as dag:
+         schedule_interval="@weekly", tags=['example'],
+         start_date=pendulum.datetime(2022, 12, 24, tz="UTC")) as dag:
     def download_files(**kwargs):
         bucket_name = os.getenv("BUCKET_NAME")
         input_dir = "/app/input_files"
@@ -20,6 +19,7 @@ with DAG("sensor_training", default_args={"retries": 2},
 
 
     def batch_prediction(**kwargs):
+        from sensor.pipeline.batch_prediction import start_batch_prediction
         input_dir = "/app/input_files"
         for filename in os.listdir(input_dir):
             start_batch_prediction(file_path=os.path.join(input_dir
